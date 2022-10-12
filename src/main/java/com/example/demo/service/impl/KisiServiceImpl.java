@@ -10,10 +10,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -24,6 +26,7 @@ public class KisiServiceImpl implements KisiService {
     @Override
     @Transactional
     public KisiDto save(KisiDto kisiDto) {
+        //Assert.isNull(kisiDto.getAdi(),"Adı alanı zorunludur");
         Kisi kisi = new Kisi();
         kisi.setAdi(kisiDto.getAdi());
         kisi.setSoyadi(kisiDto.getSoyadi());
@@ -49,9 +52,21 @@ public class KisiServiceImpl implements KisiService {
     }
 
     @Override
-    public KisiDto getAll(KisiDto kisiDto) {
-        return null;
+    public List<KisiDto> getAll() {
+        List<Kisi> kisiler = kisiRepository.findAll();
+        List<KisiDto> kisiDtos = new ArrayList<>();
+        kisiler.forEach(it->{
+             KisiDto kisiDto = new KisiDto();
+             kisiDto.setId(it.getId());
+             kisiDto.setAdi(it.getAdi());
+             kisiDto.setSoyadi(it.getSoyadi());
+             kisiDto.setAdresler(it.getAdresler().stream().map(Adres::getAdres)
+                     .collect(Collectors.toList()));
+             kisiDtos.add(kisiDto);
+        });
+        return kisiDtos;
     }
+
 
     @Override
     public Page<KisiDto> getAll(Pageable pageable) {
