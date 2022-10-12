@@ -18,7 +18,7 @@ public class Kisi {
     @javax.persistence.Id
     @SequenceGenerator(name = "seq_kisi",allocationSize = 1)
     @GeneratedValue(generator = "seq_kisi", strategy = GenerationType.SEQUENCE)
-    private Long Id;
+    private Long id;
 
     @Column(length = 100, name = "adi")
     private String adi;
@@ -28,5 +28,5 @@ public class Kisi {
 
     @OneToMany
     @JoinColumn(name = "kisi_adres_id")
-    private List<Adres> adresleri;
+    private List<Adres> adresler;
 }
