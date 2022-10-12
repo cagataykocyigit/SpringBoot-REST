@@ -1,4 +1,8 @@
 package com.example.demo.repo;
 
-public class AdresRepository {
+import com.example.demo.entity.Adres;
+import com.example.demo.entity.Kisi;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface AdresRepository extends JpaRepository<Adres,Long> {
 }
